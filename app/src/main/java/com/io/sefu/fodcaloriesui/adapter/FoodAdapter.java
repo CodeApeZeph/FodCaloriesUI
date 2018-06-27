@@ -1,13 +1,16 @@
 package com.io.sefu.fodcaloriesui.adapter;
 
 import android.content.Context;
+import android.content.Intent;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.TextView;
+import android.widget.Toast;
 
+import com.io.sefu.fodcaloriesui.MenuDetail;
 import com.io.sefu.fodcaloriesui.R;
 import com.io.sefu.fodcaloriesui.model.Food;
 
@@ -37,6 +40,8 @@ public class FoodAdapter extends RecyclerView.Adapter<FoodAdapter.ViewHolder> {
         View foodView = inflater.inflate(R.layout.food_list_item, parent, false);
         // Return a new holder instance
         ViewHolder viewHolder = new ViewHolder(foodView);
+
+
         return viewHolder;
     }
 
@@ -49,6 +54,7 @@ public class FoodAdapter extends RecyclerView.Adapter<FoodAdapter.ViewHolder> {
         holder.textViewfoodName.setText(mFoods.get(position).getFoodName());
         holder.textViewFoodContent.setText(mFoods.get(position).getFoodContent());
         holder.foodImage.setImageResource(mFoods.get(position).getFoodImage());
+
     }
 
     // Returns the total count of items in the list
@@ -67,13 +73,26 @@ public class FoodAdapter extends RecyclerView.Adapter<FoodAdapter.ViewHolder> {
 
         // We also create a constructor that accepts the entire item row
         // and does the view lookups to find each subview
-        public ViewHolder(View itemView) {
+        public ViewHolder(final View itemView) {
             // Stores the itemView in a public final member variable that can be used
             // to access the context from any ViewHolder instance.
             super(itemView);
             textViewfoodName = (TextView) itemView.findViewById(R.id.tvFoodName);
             textViewFoodContent = (TextView) itemView.findViewById(R.id.tvFoodContent);
             foodImage = (ImageView) itemView.findViewById(R.id.imageFood);
+
+
+            itemView.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    int position = getAdapterPosition();
+
+                    Toast.makeText(itemView.getContext(), "" + position, Toast.LENGTH_SHORT).show();
+                    Intent openDetailsIntent = new Intent(itemView.getContext(), MenuDetail.class);
+                    itemView.getContext().startActivity(openDetailsIntent);
+                }
+            });
+
         }
     }
 }
